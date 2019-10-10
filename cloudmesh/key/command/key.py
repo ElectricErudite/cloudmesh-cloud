@@ -1,3 +1,4 @@
+from cloudmesh.common.debug import VERBOSE
 from cloudmesh.common.Printer import Printer
 from cloudmesh.common.console import Console
 from cloudmesh.common.parameter import Parameter
@@ -232,21 +233,25 @@ class KeyCommand(PluginCommand):
         elif arguments.add:
 
             """
-             key add [NAME] [--source=FILENAME] # NOT IMPLEMENTED YET
+             key add [NAME] [--source=FILENAME]
              key add [NAME] [--source=git]
              key add [NAME] [--source=ssh]
              """
             key = Key()
 
-            if arguments["--source"] == "ssh":
+            source = arguments["--source"]
+            if source == "ssh":
                 name = arguments.NAME or "ssh"
                 key.add(name, "ssh")
-            elif arguments["--source"] == "git":
+            elif source == "git":
                 name = arguments.NAME or "git"
                 key.add("git", "git")
+            elif source is not None:
+                name = arguments.NAME or source
+                key.add(name, "input")
             else:
                 config = Config()
-                name = config["cloudmesh.profile.user"]
+                name = config["cloudmesh.profile.github"]
                 kind = "ssh"
                 key.add(name, kind)
 
