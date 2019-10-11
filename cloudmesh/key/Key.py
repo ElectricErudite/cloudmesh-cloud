@@ -4,6 +4,7 @@
 # see and inspect cloudmesh.common
 import os
 from os.path import expanduser
+from cloudmesh.common.console import Console
 # see content of path_expand it does expanduser as far as I know
 from cloudmesh.common.util import path_expand
 from cloudmesh.management.configuration.SSHkey import SSHkey
@@ -58,9 +59,11 @@ class Key(object):
             key = SSHkey(name=name)
             keys = [key]
 
+        elif source == "input":
+            key = SSHkey(name=name, path=name)
+            keys = [key]
         else:
             raise NotImplementedError
-            # source is filename
 
         return keys
 

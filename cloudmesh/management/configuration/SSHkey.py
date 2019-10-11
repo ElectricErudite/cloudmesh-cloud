@@ -5,6 +5,8 @@ from os.path import basename
 from cloudmesh.common.util import path_expand
 from pathlib import Path
 import requests
+from cloudmesh.common.debug import VERBOSE
+from cloudmesh.common.console import Console
 
 from cloudmesh.configuration.Config import Config
 
@@ -12,8 +14,8 @@ from cloudmesh.configuration.Config import Config
 # noinspection PyBroadException
 class SSHkey(dict):
 
-    def __init__(self, name=None):
-        self.load()
+    def __init__(self, name=None, path=None):
+        self.load(path=path)
         if name is not None:
             self['name'] = name
             self['cm']['name'] = name
@@ -27,10 +29,16 @@ class SSHkey(dict):
         }
         return d
 
-    def load(self):
-        self["profile"] = Config()["cloudmesh"]["profile"]
-        self["path"] = path_expand(self["profile"]["publickey"])
+    def load(self, path=None):
 
+        Console.ok(f"Path = {path}")
+
+        if path is None:
+            self["path"] = path_expand(self["profile"]["publickey"])
+        else:
+            self["path"] = path_expand(path)
+            
+        self["profile"] = Config()["cloudmesh"]["profile"]
         self["uri"] = 'file://{path}'.format(path=self["path"])
         self['public_key'] = open(Path(self["path"]), "r").read().rstrip()
 
