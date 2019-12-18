@@ -10,7 +10,7 @@ from cloudmesh.configuration.Config import Config
 from cloudmesh.mongo.CmDatabase import CmDatabase
 from cloudmesh.shell.command import PluginCommand
 from cloudmesh.shell.command import command, map_parameters
-from cloudmesh.configuration.security.encrypt import KeyHandler
+from cloudmesh.configuration.security.KeyHandler import KeyHandler
 from cloudmesh.common.util import path_expand, yn_choice
 from pprint import pprint
 import os
